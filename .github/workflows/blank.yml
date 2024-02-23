@@ -16,16 +16,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install sshpass
-      run: sudo apt-get install -y sshpass
+    - name: Install sshpass and openssh-client
+      run: sudo apt-get install -y sshpass openssh-client
 
-    - name: SSH into instance and run command
-      uses: jirutka/ssh-agent@v0.4.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-    - name: SSH into instance and run command
+    - name: Set up SSH agent and run command
       run: |
-         sshpass -p "123" ssh ubuntu@3.88.163.75 'touch new.txt'
+        eval "$(ssh-agent -s)"
+        ssh-add - <<< ${{ secrets.SSH_PRIVATE_KEY }}
+        sshpass -p "123" ssh ubuntu@3.88.163.75 'touch new.txt'
+
     
 
 
