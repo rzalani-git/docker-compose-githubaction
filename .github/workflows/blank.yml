@@ -24,6 +24,8 @@ jobs:
 
     - name: Set up SSH agent and run command
       run: |
+        echo "PRIVATE_KEY_PEM" > private_key.pem
+        cat private_key.pem
         eval "$(ssh-agent -s)"
         echo "$PRIVATE_KEY" | ssh-add -
         sshpass -p "123" ssh ubuntu@3.88.163.75 'touch new.txt'
